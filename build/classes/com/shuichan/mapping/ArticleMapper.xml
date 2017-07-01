@@ -1,0 +1,198 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.shuichan.dao.ArticleDao" >
+  <resultMap id="BaseResultMap" type="com.shuichan.pojo.Article" >
+    <id column="article_id" property="articleId" jdbcType="INTEGER" />
+    <result column="title" property="title" jdbcType="VARCHAR" />
+    <result column="category" property="category" jdbcType="VARCHAR" />
+    <result column="title_img" property="titleImg" jdbcType="VARCHAR" />    
+    <result column="publish_time" property="publishTime" jdbcType="TIMESTAMP" />
+	<result column="author" property="author" jdbcType="VARCHAR" />
+    <result column="read_count" property="readCount" jdbcType="INTEGER" />
+    <result column="description" property="description" jdbcType="LONGVARCHAR" />
+  </resultMap>
+  <resultMap id="ResultMapWithBLOBs" type="com.shuichan.pojo.Article" extends="BaseResultMap" >
+    <result column="article_content" property="articleContent" jdbcType="LONGVARCHAR" />
+  </resultMap>
+
+  <sql id="Base_Column_List" >
+    article_id, title, category, title_img, publish_time, author, read_count, description
+  </sql>
+  <sql id="Blob_Column_List" >
+    article_content
+  </sql>
+  
+  <insert id="insertArticle" parameterType="com.shuichan.pojo.Article">
+  	insert into tb_article(title, category, title_img, publish_time, 
+  		author, read_count, description,article_content)
+  	values(
+  		#{title,jdbcType=VARCHAR},#{category,jdbcType=VARCHAR}, 
+  		#{titleImg,jdbcType=VARCHAR},#{publishTime,jdbcType=TIMESTAMP}, 
+  		#{author,jdbcType=VARCHAR},#{readCount,jdbcType=INTEGER}, 
+  		#{description,jdbcType=LONGVARCHAR},#{articleContent,jdbcType=LONGVARCHAR})
+  </insert>
+  
+  <insert id="insertArticleSelective" parameterType="com.shuichan.pojo.Article" >
+    <selectKey resultType="java.lang.Integer" order="AFTER" keyProperty="articleId">
+	SELECT LAST_INSERT_ID() AS article_id
+	</selectKey>
+    insert into tb_article
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+		title,
+		category,
+		publish_time,
+      <if test="titleImg != null" >
+        title_img,
+      </if>
+      <if test="author != null" >
+        author,
+      </if>
+      <if test="readCount != null" >
+        read_count,
+      </if>
+      <if test="description != null" >
+        description,
+      </if>
+      <if test="articleContent != null" >
+        article_content,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+		#{title,jdbcType=VARCHAR},
+		#{category,jdbcType=VARCHAR}, 
+  		#{publishTime,jdbcType=TIMESTAMP},
+      <if test="titleImg != null" >
+        #{titleImg,jdbcType=VARCHAR},
+      </if>
+      <if test="author != null" >
+        #{author,jdbcType=VARCHAR},
+      </if>
+      <if test="readCount != null" >
+        #{readCount,jdbcType=INTEGER},
+      </if>
+      <if test="description != null" >
+        #{description,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="articleContent != null" >
+        #{articleContent,jdbcType=LONGVARCHAR},
+      </if>
+    </trim>
+  </insert>
+  
+  <delete id="deleteArticleByPrimaryKey" parameterType="java.lang.Integer">
+  	delete from tb_article where article_id = #{articleId, jdbcType=INTEGER}
+  </delete>
+  
+  <update id="updateArticleByPrimaryKeySelective" parameterType="com.shuichan.pojo.Article">
+    update tb_article
+    <set>
+      <if test="title != null">
+      	title = #{title,jdbcType=VARCHAR},
+      </if>
+      <if test="category != null">
+      	category = #{category, jdbcType=VARCHAR},
+      </if>
+      <if test="publishTime != null">
+      	publish_time = #{publishTime,jdbcType=TIMESTAMP},,
+      </if>
+      <if test="titleImg != null" >
+        title_img = #{titleImg,jdbcType=VARCHAR},
+      </if>
+      <if test="author != null" >
+        author = #{author,jdbcType=VARCHAR},
+      </if>
+      <if test="readCount != null" >
+        read_count = #{readCount,jdbcType=INTEGER},
+      </if>
+      <if test="description != null" >
+        description = #{description,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="articleContent != null" >
+        article_content = #{articleContent,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    where article_id = #{articleId,jdbcType=INTEGER}
+  </update>
+  
+  
+  <update id="updateArticleIsAduiting" parameterType="com.shuichan.pojo.Article" >
+    update tb_article
+    set is_auditing = #{isAuditing,jdbcType=INTEGER}    
+    where article_id = #{articleId,jdbcType=INTEGER}
+  </update>
+  
+  <update id="updateArticleByPrimaryKey" parameterType="com.shuichan.pojo.Article" >
+    update tb_article
+    set title = #{title,jdbcType=VARCHAR},
+      	category = #{category, jdbcType=VARCHAR},   
+      	publish_time = #{publishTime,jdbcType=TIMESTAMP},  
+        title_img = #{titleImg,jdbcType=VARCHAR},     
+        author = #{author,jdbcType=VARCHAR},     
+        read_count = #{readCount,jdbcType=INTEGER},      
+        description = #{description,jdbcType=LONGVARCHAR},  
+        article_content = #{articleContent,jdbcType=LONGVARCHAR},
+    where article_id = #{articleId,jdbcType=INTEGER}
+  </update>
+  
+  <select id="selectByPrimaryKey" resultMap="ResultMapWithBLOBs" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+ 	,
+    <include refid="Blob_Column_List" />
+    from tb_article 
+    where article_id = #{articleId,jdbcType=INTEGER}
+  </select>
+  
+  
+  <select id="selectArticleByIsAuditing" resultMap="ResultMapWithBLOBs" parameterType="java.lang.Integer">
+    select 
+    <include refid="Base_Column_List" />
+ 	,
+    <include refid="Blob_Column_List" />
+    from tb_article 
+    where is_auditing = #{isAuditing, jdbcType=INTEGER}
+  </select>
+  
+   <select id="selectArticles" resultMap="ResultMapWithBLOBs">
+    select 
+    <include refid="Base_Column_List" />
+ 	,
+    <include refid="Blob_Column_List" />
+    from tb_article
+  </select>
+  
+  
+  <select id="selectByTitle" resultMap="ResultMapWithBLOBs" parameterType="java.lang.String">
+    select 
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from tb_article where title LIKE '%#{selectInfo,jdbcType=VARCHAR}%'
+  </select>
+   
+  <select id="selectByCategory" resultMap="ResultMapWithBLOBs" parameterType="java.lang.String">
+    select 
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from tb_article
+    where category = #{category,jdbcType=VARCHAR}
+  </select>
+  
+  <select id="selectByReadCountDesc" resultMap="ResultMapWithBLOBs">
+    select 
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from tb_article ORDER BY read_count DESC
+  </select>
+  
+  <select id="selectByCategoryAndReadCountDesc" resultMap="ResultMapWithBLOBs" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from tb_article
+    where category = #{category,jdbcType=INTEGER} ORDER BY read_count DESC
+  </select>
+</mapper>

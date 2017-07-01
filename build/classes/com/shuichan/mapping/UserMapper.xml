@@ -1,0 +1,302 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.shuichan.dao.UserDao" >
+  <resultMap id="BaseResultMap" type="com.shuichan.pojo.User" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="user_name" property="userName" jdbcType="VARCHAR" />
+    <result column="person_name" property="personName" jdbcType="VARCHAR" />
+    <result column="password" property="password" jdbcType="VARCHAR" />
+    <result column="power" property="power" jdbcType="INTEGER" />
+    <result column="status" property="status" jdbcType="INTEGER" />
+    <result column="tel" property="tel" jdbcType="VARCHAR" />
+    <result column="email" property="email" jdbcType="VARCHAR" />
+    <result column="enterprise_name" property="enterpriseName" jdbcType="VARCHAR" />
+    <result column="category" property="category" jdbcType="VARCHAR" />
+    <result column="professional" property="professional" jdbcType="VARCHAR" />
+    <result column="job" property="job" jdbcType="VARCHAR" />
+    <result column="head_img" property="headImg" jdbcType="VARCHAR" />    
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="login_time" property="loginTime" jdbcType="TIMESTAMP" />
+    <result column="last_login_time" property="lastLoginTime" jdbcType="TIMESTAMP" />
+    <result column="count" property="count" jdbcType="INTEGER" />
+  </resultMap>
+  <resultMap id="ResultMapWithBLOBs" type="com.shuichan.pojo.User" extends="BaseResultMap" >
+    <result column="description" property="description" jdbcType="LONGVARCHAR" />
+  </resultMap>
+
+  <sql id="Base_Column_List" >
+    id, user_name, person_name, password, power, status, tel, email, enterprise_name, category, professional, job, head_img, create_time, login_time, last_login_time, 
+    count
+  </sql>
+  <sql id="Blob_Column_List" >
+    description
+  </sql>
+  
+  <insert id="insert" parameterType="com.shuichan.pojo.User">
+  	insert into tb_user(user_name, person_name, password, power, status, tel, email, enterprise_name, category, 
+  		professional, job, head_img, create_time, login_time, last_login_time, count) 
+  	values(
+		#{userName,jdbcType=VARCHAR}, #{personName,jdbcType=VARCHAR}, 
+	    #{password,jdbcType=VARCHAR}, #{power,jdbcType=INTEGER}, #{status,jdbcType=INTEGER}, 
+	    #{tel,jdbcType=VARCHAR}, #{email,jdbcType=VARCHAR}, 
+	    #{enterpriseName,jdbcType=VARCHAR}, #{category,jdbcType=VARCHAR}, 
+	    #{professional,jdbcType=VARCHAR}, #{job,jdbcType=VARCHAR}, 
+	    #{headImg,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, 
+	    #{loginTime,jdbcType=TIMESTAMP}, #{lastLoginTime,jdbcType=TIMESTAMP}, 
+	    #{count,jdbcType=INTEGER}, #{description,jdbcType=LONGVARCHAR})
+  </insert>
+  
+  <insert id="insertSelective" parameterType="com.shuichan.pojo.User" >
+    <selectKey resultType="java.lang.Integer" order="AFTER" keyProperty="id">
+	SELECT LAST_INSERT_ID() AS id
+	</selectKey>
+    insert into tb_user
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="userName != null" >
+        user_name,
+      </if>
+      <if test="personName != null" >
+        person_name,
+      </if>
+      <if test="password != null" >
+        password,
+      </if>
+      <if test="power != null" >
+        power,
+      </if>
+      <if test="status != null" >
+        status,
+      </if>
+      <if test="tel != null" >
+        tel,
+      </if>
+      <if test="email != null" >
+        email,
+      </if>
+      <if test="enterpriseName != null" >
+        enterprise_name,
+      </if>
+      <if test="category != null" >
+        category,
+      </if>
+      <if test="professional != null" >
+        professional,
+      </if>
+      <if test="job != null" >
+        job,
+      </if>
+      <if test="headImg != null" >
+        head_img,
+      </if>
+      <if test="createTime != null" >
+      create_time
+      </if>
+      <if test="loginTime != null" >
+        login_time,
+      </if>
+      <if test="lastLoginTime != null" >
+        last_login_time,
+      </if>
+      <if test="count != null" >
+        count,
+      </if>
+      <if test="description != null" >
+        description,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="userName != null" >
+        #{userName,jdbcType=VARCHAR},
+      </if>
+      <if test="personName != null" >
+        #{personName,jdbcType=VARCHAR},
+      </if>
+      <if test="password != null" >
+        #{password,jdbcType=VARCHAR},
+      </if>
+      <if test="power != null" >
+        #{power,jdbcType=INTEGER},
+      </if>
+      <if test="status != null" >
+        status,
+      </if>
+      <if test="tel != null" >
+        #{tel,jdbcType=VARCHAR},
+      </if>
+      <if test="email != null" >
+        #{email,jdbcType=VARCHAR},
+      </if>
+      <if test="enterpriseName != null" >
+        #{enterpriseName,jdbcType=VARCHAR},
+      </if>
+      <if test="category != null" >
+        #{category,jdbcType=VARCHAR},
+      </if>
+      <if test="professional != null" >
+        #{professional,jdbcType=VARCHAR},
+      </if>
+      <if test="job != null" >
+        #{job,jdbcType=VARCHAR},
+      </if>
+      <if test="headImg != null" >
+        #{headImg,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="loginTime != null" >
+        #{loginTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="lastLoginTime != null" >
+        #{lastLoginTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="count != null" >
+        #{count,jdbcType=INTEGER},
+      </if>
+      <if test="description != null" >
+        #{description,jdbcType=LONGVARCHAR},
+      </if>
+    </trim>
+  </insert>
+  
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+  	delete from tb_user where id = #{id, jdbcType=INTEGER}
+  </delete>
+  
+  <update id="updateByPrimaryKeySelective" parameterType="com.shuichan.pojo.User">
+    update tb_user
+    <set>
+      <if test="userName != null" >
+        user_name = #{userName,jdbcType=VARCHAR},
+      </if>
+      <if test="personName != null" >
+        person_name = #{personName,jdbcType=VARCHAR},
+      </if>
+      <if test="password != null" >
+        password = #{password,jdbcType=VARCHAR},
+      </if>
+      <if test="power != null" >
+        power = #{power,jdbcType=INTEGER},
+      </if>
+      <if test="status != null" >
+        status = #{status,jdbcType=INTEGER},
+      </if>      
+      <if test="tel != null" >
+        tel = #{tel,jdbcType=VARCHAR},
+      </if>
+      <if test="email != null" >
+        email = #{email,jdbcType=VARCHAR},
+      </if>
+      <if test="enterpriseName != null" >
+        enterprise_name = #{enterpriseName,jdbcType=VARCHAR},
+      </if>
+      <if test="category != null" >
+        category = #{category,jdbcType=VARCHAR},
+      </if>
+      <if test="professional != null" >
+        professional = #{professional,jdbcType=VARCHAR},
+      </if>
+      <if test="job != null" >
+        job = #{job,jdbcType=VARCHAR},
+      </if>
+      <if test="headImg != null" >
+        head_img = #{headImg,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="loginTime != null" >
+        login_time = #{loginTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="lastLoginTime != null" >
+        last_login_time = #{lastLoginTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="count != null" >
+        count = #{count,jdbcType=INTEGER},
+      </if>
+      <if test="description != null" >
+        description = #{description,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  
+  <update id="updateUserStatus" parameterType="com.shuichan.pojo.User" >
+    update tb_user
+    set status = #{status, jdbcType=INTEGER}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  
+  <update id="updateByPrimaryKey" parameterType="com.shuichan.pojo.User" >
+    update tb_user
+    set user_name = #{userName,jdbcType=VARCHAR},
+      person_name = #{personName,jdbcType=VARCHAR},
+      password = #{password,jdbcType=VARCHAR},
+      power = #{power,jdbcType=INTEGER},
+      status = #{status,jdbcType=INTEGER},
+      tel = #{tel,jdbcType=VARCHAR},
+      email = #{email,jdbcType=VARCHAR},
+      enterprise_name = #{enterpriseName,jdbcType=VARCHAR},
+      category = #{category,jdbcType=VARCHAR},
+      professional = #{professional,jdbcType=VARCHAR},
+      job = #{job,jdbcType=VARCHAR},
+      head_img = #{headImg,jdbcType=VARCHAR},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      login_time = #{loginTime,jdbcType=TIMESTAMP},
+      last_login_time = #{lastLoginTime,jdbcType=TIMESTAMP},
+      count = #{count,jdbcType=INTEGER}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  
+  <select id="selectByPrimaryKey" resultMap="ResultMapWithBLOBs" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+ 	,
+    <include refid="Blob_Column_List" />
+    from tb_user where id = #{id,jdbcType=INTEGER}
+  </select>
+  
+  
+  <select id="selectUser" resultMap="ResultMapWithBLOBs">
+    select 
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from tb_user
+  </select>
+   
+  <select id="selectByUserNameAndPwd" resultMap="ResultMapWithBLOBs" parameterType="java.util.Map">
+    select 
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from tb_user
+    where user_name = #{userName,jdbcType=VARCHAR} and password = #{password,jdbcType=VARCHAR}
+  </select>
+  
+  <select id="selectByUserName" resultMap="ResultMapWithBLOBs" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from tb_user
+    where user_name = #{userName,jdbcType=VARCHAR}
+  </select>
+  
+  <select id="selectByPower" resultMap="ResultMapWithBLOBs" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from tb_user
+    where power = #{power,jdbcType=INTEGER}
+  </select>
+  
+
+</mapper>

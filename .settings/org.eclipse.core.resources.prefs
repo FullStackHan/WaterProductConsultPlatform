@@ -1,0 +1,8 @@
+eclipse.preferences.version=1
+encoding//WebContent/WEB-INF/classes/jdbc.properties=UTF-8
+encoding//WebContent/WEB-INF/classes/log4j.properties=UTF-8
+encoding//WebContent/WEB-INF/jsp/insertArticle.jsp=UTF-8
+encoding//WebContent/WEB-INF/jsp/shouye.jsp=UTF-8
+encoding//WebContent/index.jsp=UTF-8
+encoding//src/com/shuichan/pojo/User.java=UTF-8
+encoding/<project>=UTF-8
